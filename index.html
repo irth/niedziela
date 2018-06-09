@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+
+    <title>Niedziela handlowa</title>
+
+		<style>
+      h1, h2, h3 {
+        font-weight: 400;
+        padding: 0;
+        margin: 0;
+        font-size: 150%;
+      }
+
+      h2 {
+        font-size: 300%;
+        margin-top: .1em;
+        margin-bottom: .1em;
+      }
+
+      h1 {
+        font-size: 400%;
+        margin-top: .7em;
+        margin-bottom: .3em;
+      } 
+
+      #najblizsza {
+        font-size: 120%;
+        margin-bottom: 1em;
+      }
+
+      body {
+        font-family: sans-serif;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #page {
+        text-align: center;
+      }
+
+      small {
+        opacity: 0.7;
+          transition: all ease-in-out 150ms;
+      }
+
+      small:hover {
+        opacity: 1;
+      }
+		</style>
+  </head>
+
+  <body>
+    <div id="page">
+			<h3>Czy niedziela</h3>
+			<h2 id="data"></h2>
+			<h3>jest niedzielą handlową?</h3>
+			<h1 id="handlowa"></h1>
+      <h3 id="najblizsza"></h3>
+      <small>Made by <a href="https://irth.pl">W. ~irth K.</a></small>
+    </div>
+
+		<script>
+			const handlowa=[
+				"6-3",
+				"6-24",
+				"7-1",
+				"7-29",
+				"8-5",
+				"8-26",
+				"9-2",
+				"9-30",
+				"10-7",
+				"10-28",
+				"11-4",
+				"11-25",
+				"12-2",
+				"12-16",
+				"12-23",
+				"12-30"
+			]
+
+	
+			// https://stackoverflow.com/questions/1579010/get-next-date-from-weekday-in-javascript
+			function nextDay(x) {
+				var now = new Date();    
+				now.setDate(now.getDate() + (x+(7-now.getDay())) % 7);
+				return now;
+			}
+
+      function isHandlowa(niedziela) {
+        return (handlowa.indexOf((niedziela.getMonth()+1) + "-" + niedziela.getDate()) != -1)
+      }
+
+      function nextHandlowa() {
+        var now = new Date()
+        return isHandlowa(now) ? now : (new Date(handlowa
+          .map(function(d) { return Date.parse(d+"-2018") })
+          .filter(function(d) {
+            return now.getTime() < d;
+          })[0]))
+      }
+
+			var niedziela = nextDay(7);
+
+			function pad(x) {
+				var x=""+x
+				if(x.length == 1) {
+					return "0"+x
+				} else {
+					return x
+				}
+			}
+
+      function formatDate(d) {
+        return pad(d.getDate()) + "-" + pad(d.getMonth() + 1) + "-2018"
+      }
+
+      document.getElementById("data").innerHTML = formatDate(niedziela)
+
+			if(isHandlowa(niedziela)) {
+				document.getElementById("handlowa").innerHTML = "Tak."
+        if(isHandlowa(new Date())) document.getElementById("najblizsza").innerHTML = "To dziś!"
+			} else {
+				document.getElementById("handlowa").innerHTML = "Nie."
+        document.getElementById("najblizsza").innerHTML = "Najbliższa niedziela handlowa wypada "+formatDate(nextHandlowa())+".";
+			}
+		</script>
+  </body>
+</html>

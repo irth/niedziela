@@ -57,17 +57,26 @@
       small:hover {
         opacity: 1;
       }
+
+      small.smaller {
+        font-size: 60%;
+      }
+
+      #paypal {
+        text-decoration: none;
+      }
 		</style>
   </head>
 
   <body>
     <div id="page">
-			<h3>Czy niedziela</h3>
+			<h3>Czy najbliższa niedziela</h3>
 			<h2 id="data">...</h2>
 			<h3>jest niedzielą handlową?</h3>
 			<h1 id="handlowa">(...)</h1>
       <h3 id="najblizsza">Najbliższa niedziela handlowa wypada (...).</h3>
-      <small>Made by <a href="https://irth.pl">W. ~irth K.</a></small>
+      <small>Made by <a href="https://irth.pl">W. ~irth K.</a></small><br>
+      <small class="smaller"><a id="paypal" href="https://paypal.me/irth7">paypal</a></small>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
@@ -131,7 +140,8 @@
 
 			if(isHandlowa(niedziela)) {
 				document.getElementById("handlowa").innerHTML = "Tak."
-        if(isHandlowa(new Date())) document.getElementById("najblizsza").innerHTML = "To dziś!"
+        if(isHandlowa(moment())) document.getElementById("najblizsza").innerHTML = "To dziś!"
+        else document.getElementById("najblizsza").innerHTML = ""
 			} else {
 				document.getElementById("handlowa").innerHTML = "Nie."
         document.getElementById("najblizsza").innerHTML = "Najbliższa niedziela handlowa wypada "+formatDate(nextHandlowa())+".";
